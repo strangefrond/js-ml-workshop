@@ -2,7 +2,7 @@
 var KNN = require('../001_knn/knn');
 var expect = require('chai').expect;
 var mnist = require('../lib/mnist_reader');
-// var writer = require('../lib/writer');
+var writer = require('../lib/writer');
 var randomPoints = require('../lib/rand');
 /*randomPoints is a function.  You would use it like this:
 
@@ -254,7 +254,7 @@ describe('Testing the basic KNN functionality.', function(){
 describe('Testing the KNN with data from the MNIST', function(){
 
 	//Need more time, to handle all the data.
-	this.timeout(10000);
+	this.timeout(40000);
 
 	it('Can handle somewhat chaotic data', function(){
 		var knn = new KNN(1);
@@ -288,7 +288,7 @@ describe('Testing the KNN with data from the MNIST', function(){
     */
 	it('Can be trained off the mnist data', function(done){
 		var allElements = mnist.allElements();			//Should load up all 5000 elements
-		var knn = new KNN(3);
+		var knn = new KNN(8);
 		var trainingSet = allElements.slice(0,600); 	//Make the training set
 		var testingSet = allElements.slice(1000,1100);	//Make the testing set
 		knn.train(trainingSet)
@@ -297,8 +297,8 @@ describe('Testing the KNN with data from the MNIST', function(){
 
 		var toClassify = testingSet.map(function(n){return n[0]});
 		var toExport = knn.predict(toClassify).map(function(n, index){ return [toClassify[index],n]; } );
-		// writer.exportClassified(toExport, done);
-		done();
+		writer.exportClassified(toExport, done);
+
 	});
 
 });
